@@ -35,8 +35,9 @@ app.post("/petition", async (request, response) => {
     }
 });
 
-app.get("/petition/signed", (request, response) => {
-    response.render("signed");
+app.get("/petition/signed", async (request, response) => {
+    const signers = await getSigners();
+    response.render("signed", { signers });
 });
 
 app.get("/petition/signers", async (request, response) => {
