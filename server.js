@@ -28,7 +28,7 @@ app.post("/petition", async (request, response) => {
         response.redirect("/petition/signed");
     } catch (error) {
         console.log(error);
-        response.render("createUser", {
+        response.render("petition", {
             title: "create new user",
             error: true,
         });

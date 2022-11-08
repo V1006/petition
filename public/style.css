@@ -12,6 +12,8 @@ body {
 
 h1 {
     text-align: center;
+    font-size: 3rem;
+    padding: 1rem;
 }
 
 #stage {
@@ -53,4 +55,17 @@ h1 {
     min-width: 120px;
     cursor: pointer;
     font-size: 1.2rem;
+}
+
+.error {
+    color: red;
+}
+
+.signers {
+    list-style: none;
+}
+
+.signers li {
+    padding: 0.5rem;
+    font-size: 1.5rem;
 }

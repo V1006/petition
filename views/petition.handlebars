@@ -6,18 +6,29 @@
             value=""
             name="first_name"
             placeholder="First Name"
+            required
         />
         <p>Last Name</p><input
             type="text"
             value=""
             name="last_name"
             placeholder="Last Name"
+            required
         />
-        <input type="hidden" id="stage" value="{{}}" name="signature" />
+        <input
+            type="hidden"
+            class="hiddenInput"
+            value=""
+            name="signature"
+            required
+        />
     </form>
     <div class="signHere">
         <p>Sign here</p>
         <canvas id="stage" width="700" height="100"></canvas>
+        {{#if error}}
+            <p class="error">Fill out all fields</p>
+        {{/if}}
         <button id="submit" type="submit" form="userData">Submit</button>
     </div>
 

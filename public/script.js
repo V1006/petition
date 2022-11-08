@@ -2,9 +2,10 @@ const canvas = document.querySelector("#stage");
 const ctx = canvas.getContext("2d");
 const offsetLeft = canvas.offsetLeft;
 const offsetTop = canvas.offsetTop;
+const hiddenInput = document.querySelector(".hiddenInput");
 
 console.log(canvas);
-ctx.strokeStyle = "#8542c0";
+ctx.strokeStyle = "#000000";
 ctx.lineWidth = 4;
 
 let currentX;
@@ -36,5 +37,5 @@ canvas.onmousemove = function (event) {
 canvas.onmouseup = function () {
     mouseDown = false;
     signature = canvas.toDataURL();
-    console.log(signature);
+    hiddenInput.value = signature;
 };

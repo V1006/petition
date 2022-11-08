@@ -15,10 +15,13 @@ async function getSigners() {
 }
 
 function createUser({ first_name, last_name, signature }) {
+    if (signature == "") {
+        throw new Error();
+    }
     return db.query(
         `
     INSERT INTO signatures (first_name, last_name, signature)
-    VALUES ($1, $2, $4)
+    VALUES ($1, $2, $3)
     `,
         [first_name, last_name, signature]
     );
