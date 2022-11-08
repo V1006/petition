@@ -1,0 +1,23 @@
+<section>
+    <h1>Petition</h1>
+    <form class="userData" id="userData" action="/petition" method="POST">
+        <p>First Name</p><input
+            type="text"
+            value=""
+            name="first_Name"
+            placeholder="First Name"
+        />
+        <p>Last Name</p><input
+            type="text"
+            value=""
+            name="last_Name"
+            placeholder="Last Name"
+        />
+    </form>
+    <div class="signHere">
+        <p>Sign here</p>
+        <canvas id="stage" width="700" height="100"></canvas>
+        <button id="submit" type="submit" form="userData">Submit</button>
+    </div>
+
+</section>
