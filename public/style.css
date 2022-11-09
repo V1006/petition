@@ -75,7 +75,9 @@ h1 {
 .bg {
     height: 600px;
     width: 600px;
-    background-image: url(/public/pngegg.png);
+    background-image: url(/pngegg.png);
     z-index: 1;
     position: absolute;
+    background-size: cover;
+    top: calc(50% - 300px);
 }

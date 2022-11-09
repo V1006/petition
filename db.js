@@ -14,17 +14,18 @@ async function getSigners() {
     return result.rows;
 }
 
-function createUser({ first_name, last_name, signature }) {
+async function createUser({ first_name, last_name, signature }) {
     if (signature == "") {
         throw new Error();
     }
-    return db.query(
+    const result = await db.query(
         `
     INSERT INTO signatures (first_name, last_name, signature)
-    VALUES ($1, $2, $3)
+    VALUES ($1, $2, $3) RETURNING *
     `,
         [first_name, last_name, signature]
     );
+    return result.rows[0];
 }
 
 module.exports = { createUser, getSigners };
