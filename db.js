@@ -9,9 +9,16 @@ const db = spicedPg(DATABASE_URL);
 
 /// setup ///
 
-async function getSigners() {
+async function getSignatures() {
     const result = await db.query("SELECT * FROM signatures");
     return result.rows;
+}
+
+async function getSignatureByID(id) {
+    const result = await db.query(`SELECT * FROM signatures WHERE id = $1`, [
+        id,
+    ]);
+    return result.rows[0];
 }
 
 async function createUser({ first_name, last_name, signature }) {
@@ -28,4 +35,4 @@ async function createUser({ first_name, last_name, signature }) {
     return result.rows[0];
 }
 
-module.exports = { createUser, getSigners };
+module.exports = { createUser, getSignatures, getSignatureByID };

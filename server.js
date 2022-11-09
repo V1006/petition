@@ -2,7 +2,7 @@
 const express = require("express");
 const path = require("path");
 const { engine } = require("express-handlebars");
-const { createUser, getSigners } = require("./db");
+const { createUser, getSignatures, getSignatureByID } = require("./db");
 const { SESSION_SECRET } = require("./secrets.json");
 const cookieSession = require("cookie-session");
 
@@ -52,15 +52,13 @@ app.post("/petition", async (request, response) => {
 
 app.get("/petition/signed", async (request, response) => {
     const signaturesID = request.session.signature_id;
-    const signers = await getSigners();
-    response.render("signed", {
-        signers,
-        currentSigner: signers[signaturesID - 1],
-    });
+    const signers = await getSignatures();
+    const currentSigner = await getSignatureByID(signaturesID);
+    response.render("signed", { signers, currentSigner });
 });
 
 app.get("/petition/signers", async (request, response) => {
-    const signers = await getSigners();
+    const signers = await getSignatures();
     response.render("signers", { signers });
 });
 
