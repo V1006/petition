@@ -8,9 +8,8 @@ function setup() {
     const offsetTop = canvas.offsetTop;
     const hiddenInput = document.querySelector(".hiddenInput");
 
-    console.log(canvas);
     ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 2;
 
     let currentX;
     let currentY;

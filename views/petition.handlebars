@@ -1,35 +1,9 @@
 <section>
+    {{! <div class="bg"></div> }}
     <h1>Petition</h1>
-    <form class="userData" id="userData" action="/petition" method="POST">
-        <p>First Name</p><input
-            type="text"
-            value=""
-            name="first_name"
-            placeholder="First Name"
-            required
-        />
-        <p>Last Name</p><input
-            type="text"
-            value=""
-            name="last_name"
-            placeholder="Last Name"
-            required
-        />
-        <input
-            type="hidden"
-            class="hiddenInput"
-            value=""
-            name="signature"
-            required
-        />
-    </form>
-    <div class="signHere">
-        <p>Sign here</p>
-        <canvas id="stage" width="700" height="100"></canvas>
-        {{#if error}}
-            <p class="error">Fill out all fields</p>
-        {{/if}}
-        <button id="submit" type="submit" form="userData">Submit</button>
+    <div class="landingPageButtons">
+        <a href="/petition/register">Sign Up</a>
+        <a href="/petition/login">Login</a>
     </div>
 
 </section>
