@@ -1,4 +1,22 @@
-<h1>Thank you {{currentSigner.first_name}}!</h1>
-<img src="{{currentSigner.signature}}" alt="" />
-
-<a href="/petition/signers">See all {{signers.length}} signers</a>
+<nav id="nav">
+    <ul>
+        <div class="lis">
+            <li><a href="/petition/profile/edit"><i
+                    >{{currentUser.first_name}}</i>
+                    |</a>
+            </li>
+            <li><a href="/petition/logout">Logout |</a></li>
+        </div>
+    </ul>
+</nav>
+<section class="register">
+    <div class="registerSection" style="max-width: 800px;">
+        <h1>Thank you </h1>
+        <h1 class="userName">{{currentUser.first_name}}</h1>
+        <h2>And remember don't fall of the edge!</h2>
+        <div class="signatureContainer">
+            <img src="{{currentSignature.signature}}" alt="" />
+        </div>
+        <a href="/petition/signers">See all {{signers.length}} signers</a>
+    </div>
+</section>

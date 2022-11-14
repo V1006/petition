@@ -1,26 +1,36 @@
-<section>
-    <h1>Petition</h1>
-    <form class="userData" id="login" action="/petition/login" method="POST">
-        <p>E-mail</p><input
-            type="email"
-            value=""
-            name="email"
-            placeholder="E-mail"
-            required
-        />
-        <p>Password</p><input
-            type="password"
-            value=""
-            name="password"
-            placeholder="password"
-            required
-        />
-    </form>
-    {{#if error}}
-        <p class="error">E-mail or password wrong</p>
-    {{/if}}
-    <div class="signHere">
-        <button id="submit" type="submit" form="login">Login</button>
+<section class="register">
+    <div class="registerSection">
+        <h2>Fill in your email and password</h2>
+        <form
+            class="userData"
+            id="login"
+            action="/petition/login"
+            method="POST"
+        >
+            <p>E-mail</p><input
+                type="email"
+                value=""
+                name="email"
+                placeholder="E-mail"
+                required
+            />
+            <p>Password</p><input
+                type="password"
+                value=""
+                name="password"
+                placeholder="password"
+                required
+            />
+        </form>
+        {{#if error}}
+            <p class="error">E-mail or password wrong</p>
+        {{/if}}
+        <div class="signHere">
+            <button
+                class="landingButtons"
+                type="submit"
+                form="login"
+            >Login</button>
+        </div>
     </div>
-
 </section>

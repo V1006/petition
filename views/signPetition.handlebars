@@ -1,38 +1,48 @@
 <nav id="nav">
     <ul>
         <div class="lis">
-            <li><a href="#">{{currentUser.first_name}} |</a> </li>
+            <li><a href="/petition/profile/edit"><i
+                    >{{currentUser.first_name}}</i>
+                    |</a>
+            </li>
             <li><a href="/petition/logout">Logout |</a></li>
         </div>
     </ul>
 </nav>
-<section>
-    <div class="header">
-        <h1>Hey {{currentUser.first_name}},</h1>
-        <h2>Sign down here to heat the Iron</h2>
-    </div>
 
-    <form
-        class="userData"
-        id="userData"
-        action="/petition/signPetition"
-        method="POST"
-    >
-        <input
-            type="hidden"
-            class="hiddenInput"
-            value=""
-            name="signature"
-            required
-        />
-    </form>
-    <div class="signHere">
-        <p>Sign here</p>
-        <canvas id="stage" width="700" height="100"></canvas>
-        {{#if error}}
-            <p class="error">Fill out the field</p>
-        {{/if}}
-        <button id="submit" type="submit" form="userData">Submit</button>
+<section class="register">
+    <div class="registerSection" style="max-width: 800px;">
+        <div class="header">
+            <h1>Hey {{currentUser.first_name}},</h1>
+            <h2>Sign down here to heat the Iron🌎</h2>
+        </div>
+
+        <form
+            class="userData"
+            id="userData"
+            action="/petition/signPetition"
+            method="POST"
+        >
+            <input
+                type="hidden"
+                class="hiddenInput"
+                value=""
+                name="signature"
+                required
+            />
+        </form>
+        <div class="signHere">
+            <p>Sign here</p>
+            <canvas id="stage" width="700" height="100"></canvas>
+            {{#if error}}
+                <p class="error">Fill out the field</p>
+            {{/if}}
+            <button
+                class="landingButtons"
+                type="submit"
+                form="userData"
+            >Submit</button>
+        </div>
     </div>
 
 </section>

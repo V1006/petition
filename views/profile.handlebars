@@ -1,0 +1,47 @@
+<nav id="nav">
+    <ul>
+        <div class="lis">
+            <li><a href="/petition/profile/edit"><i
+                    >{{currentUser.first_name}}</i>
+                    |</a>
+            </li>
+            <li><a href="/petition/logout">Logout |</a></li>
+        </div>
+    </ul>
+</nav>
+<section class="register">
+    <div class="registerSection">
+        <h2>Provide additional information (optional)</h2>
+        <form
+            class="userData"
+            id="additionalData"
+            action="/petition/profile"
+            method="POST"
+        >
+            <p>Age</p><input type="text" name="age" placeholder="age" />
+            <p>City</p><input
+                type="text"
+                value=""
+                name="city"
+                placeholder="city"
+            />
+            <p>Homepage</p><input
+                type="url"
+                value=""
+                name="url"
+                placeholder="url"
+            />
+        </form>
+        {{#if error}}
+            <p class="error">Something went wrong</p>
+        {{/if}}
+        <div class="signHere">
+            <button
+                class="landingButtons"
+                type="submit"
+                form="additionalData"
+            >Continue</button>
+        </div>
+    </div>
+
+</section>

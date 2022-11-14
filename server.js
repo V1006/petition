@@ -9,6 +9,12 @@ const {
     createUser,
     login,
     getCurrentUser,
+    //getUsers,
+    createUserProfile,
+    getAllUserData,
+    getUserInfoById,
+    updateUser,
+    upsertUserProfile,
 } = require("./db");
 const { SESSION_SECRET } = require("./secrets.json");
 const cookieSession = require("cookie-session");
@@ -50,7 +56,8 @@ app.post("/petition/register", async (request, response) => {
     try {
         const userRegistration = await createUser(request.body);
         request.session.user_id = userRegistration.id;
-        response.redirect("/petition/signPetition");
+        request.session.one_time_visit = true;
+        response.redirect("/petition/profile");
     } catch (error) {
         console.log(error);
         response.render("register", {
@@ -94,14 +101,16 @@ app.get("/petition", (request, response) => {
     response.render("petition");
 });
 
-// NEEDS TO BE FIXED AFTER REGISTER CHANGES
+// sign the petition
 app.post("/petition/signPetition", async (request, response) => {
     try {
         await createSignatures(request.body, request.session.user_id);
         response.redirect("/petition/signed");
     } catch (error) {
         console.log(error);
-        response.render("petition", {
+        const currentUser = await getCurrentUser(request.session.user_id);
+        response.render("signPetition", {
+            currentUser,
             title: "create new user",
             error: true,
         });
@@ -113,28 +122,108 @@ app.get("/petition/signPetition", async (request, response) => {
         response.redirect("/petition/register");
         return;
     }
-    const currentUser = await getCurrentUser(request.session.user_id);
-    response.render("signPetition", { currentUser });
+    const currentSignature = await getSignatureByID(request.session.user_id);
+
+    if (!currentSignature) {
+        const currentUser = await getCurrentUser(request.session.user_id);
+        response.render("signPetition", { currentUser });
+    } else {
+        response.redirect("/petition/signers");
+    }
 });
 
 app.get("/petition/signed", async (request, response) => {
-    if (request.session.user_id) {
+    if (!request.session.user_id) {
         response.redirect("/petition/register");
         return;
     }
-    const signaturesID = request.session.signature_id;
     const signers = await getSignatures();
-    const currentSigner = await getSignatureByID(signaturesID);
-    response.render("signed", { signers, currentSigner });
+    const currentSignature = await getSignatureByID(request.session.user_id);
+    const currentUser = await getCurrentUser(request.session.user_id);
+    response.render("signed", { signers, currentSignature, currentUser });
 });
 
+// list of signers all and by city
 app.get("/petition/signers", async (request, response) => {
-    if (request.session.user_id) {
+    if (!request.session.user_id) {
         response.redirect("/petition/register");
         return;
     }
-    const signers = await getSignatures();
-    response.render("signers", { signers });
+    const allUserData = await getAllUserData();
+    const currentUser = await getCurrentUser(request.session.user_id);
+    response.render("signers", { allUserData, currentUser });
+});
+
+app.get("/petition/signers/:city", async (request, response) => {
+    const { city } = request.params;
+    if (!request.session.user_id) {
+        response.redirect("/petition/register");
+        return;
+    }
+
+    const UserDataByCity = await getAllUserData();
+    const currentUser = await getCurrentUser(request.session.user_id);
+    response.render("signersCity", {
+        UserDataByCity: UserDataByCity.filter((user) => user.city === city),
+        currentUser,
+        city,
+    });
+});
+
+// profile endpoints
+
+app.get("/petition/profile", async (request, response) => {
+    if (!request.session.user_id) {
+        response.redirect("/petition/register");
+        return;
+    }
+    if (request.session.one_time_visit) {
+        const currentUser = await getCurrentUser(request.session.user_id);
+        response.render("profile", { currentUser });
+        return;
+    }
+    response.redirect("/petition/signPetition");
+});
+
+app.post("/petition/profile", async (request, response) => {
+    try {
+        await createUserProfile(request.body, request.session.user_id);
+        request.session.one_time_visit = false;
+        response.redirect("/petition/signPetition");
+    } catch (error) {
+        console.log(error);
+        response.render("petition/profile", {
+            title: "create new user",
+            error: true,
+        });
+    }
+});
+
+// edit entpoints
+
+app.get("/petition/profile/edit", async (request, response) => {
+    if (!request.session.user_id) {
+        response.redirect("/petition/register");
+        return;
+    }
+    const userInfoByID = await getUserInfoById(request.session.user_id);
+    const currentUser = await getCurrentUser(request.session.user_id);
+    response.render("edit", { userInfoByID, currentUser });
+});
+app.post("/petition/profile/edit", async (request, response) => {
+    try {
+        await updateUser({ ...request.body, id: request.session.user_id });
+        await upsertUserProfile({
+            ...request.body,
+            user_id: request.session.user_id,
+        });
+        response.redirect("/petition/signers");
+    } catch (error) {
+        console.log(error);
+        const currentUser = await getCurrentUser(request.session.user_id);
+        const userInfoByID = await getUserInfoById(request.session.user_id);
+        response.render("edit", { currentUser, userInfoByID, error: true });
+    }
 });
 
 // logout endpoint

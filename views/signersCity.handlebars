@@ -9,9 +9,13 @@
         </div>
     </ul>
 </nav>
-<h1>These are our {{allUserData.length}} Signers</h1>
+<h1>These are our
+    {{UserDataByCity.length}}
+    Signers from
+    {{city}}
+</h1>
 <ul class="signers">
-    {{#each allUserData}}
+    {{#each UserDataByCity}}
         {{#if url}}
             <li>Name:<br />
                 <a href="{{url}}">{{first_name}} {{last_name}}</a><br />

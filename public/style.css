@@ -8,16 +8,53 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: black;
+    min-height: 100vh;
+    max-width: 100vw;
 }
 
 h1 {
-    text-align: center;
     font-size: 3rem;
     padding: 1rem;
+    color: white;
 }
 
 h2 {
     text-align: center;
+    color: white;
+}
+
+/* register */
+.header h1,
+h2 {
+    text-align: center;
+}
+
+.registerHeader h1,
+p {
+    color: white;
+    padding: 0;
+}
+.register {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.registerSection {
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: linear-gradient(-45deg, #2d8009, #1f4a03, #23a6d5, #dddddd);
+    padding: 10px;
+}
+
+.registerSection a {
+    color: white;
+    font-size: 1.5rem;
 }
 
 #stage {
@@ -62,22 +99,27 @@ h2 {
 }
 
 /* landing page */
-
-.landingPageButtons {
-    display: flex;
+.landingPageSection {
+    margin-top: 80px;
 }
 
-.landingPageButtons a {
-    text-decoration: none;
+.filler {
+    font-size: 2rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0;
+}
+
+.earth {
+    font-size: 4rem;
+}
+
+.textFields {
+    display: flex;
+    height: 100px;
+    align-items: center;
+    position: fixed;
+    left: calc(50% - 224.024px);
     color: white;
-    border: 2px black solid;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    padding: 1rem;
-    margin-top: 30px;
-    min-width: 120px;
-    text-align: center;
-    margin: 30px;
 }
 
 .error {
@@ -86,17 +128,29 @@ h2 {
 
 .signers {
     list-style: none;
+    color: white;
 }
 
 .signers li {
     padding: 0.5rem;
     font-size: 1.5rem;
+    text-transform: capitalize;
 }
 
+.signatureContainer {
+    background-color: darkgray;
+    border-radius: 2px;
+    margin: 30px;
+    max-width: 700px;
+}
+
+.userName {
+    text-transform: capitalize;
+}
 /* nav bar */
 
 #nav {
-    width: 100vw;
+    width: 100%;
 }
 
 #nav ul {
@@ -116,7 +170,7 @@ h2 {
 
 #nav ul li a {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 /* background img */
@@ -129,4 +183,152 @@ h2 {
     position: absolute;
     background-size: cover;
     top: calc(50% - 300px);
+    left: calc(50% - 300px);
+    opacity: 0;
+    scale: 0.6;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    transition: clip-path 1s;
+    cursor: pointer;
+}
+
+.mainBG {
+    position: absolute;
+    top: calc(50% - 425px);
+    left: calc(50% - 666px);
+    width: 1332px;
+    height: 850px;
+    background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1)),
+        url("/bg.png");
+    transition: background-image 1s;
+    /*     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; */
+}
+
+/* .mainBG a {
+    font-size: 2rem;
+    color: white;
+} */
+
+/* landing page buttons */
+
+.landingPageButtons {
+    display: flex;
+    position: absolute;
+    top: calc(30% - 59px);
+    left: calc(50% - 240px);
+    opacity: 0;
+}
+
+.landingPageButtons.hidden {
+    display: none;
+}
+
+.landingButtons,
+.landingButtons:after {
+    width: 150px;
+    height: 76px;
+    line-height: 78px;
+    font-size: 20px;
+    background: linear-gradient(45deg, transparent 5%, white 5%);
+    border: 0;
+    color: black;
+    letter-spacing: 3px;
+    box-shadow: 6px 0px 0px grey;
+    outline: transparent;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.landingButtons:after {
+    --slice-0: inset(50% 50% 50% 50%);
+    --slice-1: inset(80% -6px 0 0);
+    --slice-2: inset(50% -6px 30% 0);
+    --slice-3: inset(10% -6px 85% 0);
+    --slice-4: inset(40% -6px 43% 0);
+    --slice-5: inset(80% -6px 5% 0);
+
+    content: "Flat Earth";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        transparent 3%,
+        #00e6f6 3%,
+        #00e6f6 5%,
+        grey 5%
+    );
+    text-shadow: -3px -3px 0px #f8f005, 3px 3px 0px #00e6f6;
+    clip-path: var(--slice-0);
+}
+
+.landingButtons:hover:after {
+    animation: 1s glitch;
+    animation-timing-function: steps(2, end);
+}
+
+@keyframes glitch {
+    0% {
+        clip-path: var(--slice-1);
+        transform: translate(-20px, -10px);
+    }
+    10% {
+        clip-path: var(--slice-3);
+        transform: translate(10px, 10px);
+    }
+    20% {
+        clip-path: var(--slice-1);
+        transform: translate(-10px, 10px);
+    }
+    30% {
+        clip-path: var(--slice-3);
+        transform: translate(0px, 5px);
+    }
+    40% {
+        clip-path: var(--slice-2);
+        transform: translate(-5px, 0px);
+    }
+    50% {
+        clip-path: var(--slice-3);
+        transform: translate(5px, 0px);
+    }
+    60% {
+        clip-path: var(--slice-4);
+        transform: translate(5px, 10px);
+    }
+    70% {
+        clip-path: var(--slice-2);
+        transform: translate(-10px, 10px);
+    }
+    80% {
+        clip-path: var(--slice-5);
+        transform: translate(20px, -10px);
+    }
+    90% {
+        clip-path: var(--slice-1);
+        transform: translate(-10px, 0px);
+    }
+    100% {
+        clip-path: var(--slice-1);
+        transform: translate(0);
+    }
+}
+
+@media (min-width: 768px) {
+    .landingButtons,
+    .landingButtons:after {
+        width: 200px;
+        height: 86px;
+        line-height: 88px;
+    }
 }

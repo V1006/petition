@@ -1,0 +1,65 @@
+<nav id="nav">
+    <ul>
+        <div class="lis">
+            <li><a href="/petition/profile/edit"><i
+                    >{{currentUser.first_name}}</i>
+                    |</a>
+            </li>
+            <li><a href="/petition/logout">Logout |</a></li>
+        </div>
+    </ul>
+</nav>
+<section class="register">
+    <div class="registerSection">
+        <h1>Edit your profile</h1>
+        <form
+            class="userData"
+            id="register"
+            action="/petition/profile/edit"
+            method="POST"
+        >
+            <p>First Name</p><input
+                type="text"
+                value="{{userInfoByID.first_name}}"
+                name="first_name"
+                placeholder="First Name"
+                required
+            />
+            <p>Last Name</p><input
+                type="text"
+                value="{{userInfoByID.last_name}}"
+                name="last_name"
+                placeholder="Last Name"
+                required
+            />
+            <p>Age</p><input
+                type="text"
+                value="{{userInfoByID.age}}"
+                name="age"
+                placeholder="age"
+                
+            />
+            <p>City</p><input
+                type="text"
+                value="{{userInfoByID.city}}"
+                name="city"
+                placeholder="city"
+                
+            />
+            <p>Homepage</p><input
+                type="text"
+                value="{{userInfoByID.url}}"
+                name="url"
+                placeholder="Homepage"
+                
+            />
+        </form>
+        <div class="signHere">
+            {{#if error}}
+                <p class="error">Something went wrong</p>
+            {{/if}}
+            <button class="landingButtons"{{!-- id="submit" --}} type="submit" form="register">Update</button>
+
+        </div>
+    </div>
+</section>
