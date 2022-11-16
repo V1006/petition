@@ -5,6 +5,9 @@
                     >{{currentUser.first_name}}</i>
                     |</a>
             </li>
+            {{#if notSigned}}
+            <li><a href="/petition/signPetition">Sign Here |</a></li>
+            {{/if }}
             <li><a href="/petition/logout">Logout |</a></li>
         </div>
     </ul>
@@ -17,7 +20,7 @@
                 <li>Name: <p><a
                         target="_blank"
                         href="{{url}}"
-                    >{{first_name}} {{last_name}}</a></p><p>Age: {{age}}
+                    >{{first_name}} {{last_name}}</a></p><p>Age: {{#if age}} {{age}} {{else}} - {{/if}}
                         <p>City: <a
                         href="/petition/signers/{{city}}"
                     >{{city}}</a></p></li>
@@ -27,7 +30,7 @@
                 <li>Name: 
                     <p>{{first_name}} {{last_name}}</p>
                     <p>Age: 
-                    {{age}}</p>
+                    {{#if age}} {{age}} {{else}} - {{/if}}</p>
                     <p>City: <a href="/petition/signers/{{city}}">{{city}}</a></p></li>
             </div>
         {{/if}}

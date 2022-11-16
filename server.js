@@ -127,9 +127,13 @@ app.get(
 );
 
 app.get("/petition/signed", requireLoggedInUser, async (request, response) => {
-    const signers = await getSignatures();
     const currentSignature = await getSignatureByID(request.session.user_id);
+    const signers = await getSignatures();
     const currentUser = await getCurrentUser(request.session.user_id);
+    if (!currentSignature) {
+        response.redirect("signPetition");
+        return;
+    }
     response.render("signed", { signers, currentSignature, currentUser });
 });
 
@@ -137,6 +141,15 @@ app.get("/petition/signed", requireLoggedInUser, async (request, response) => {
 app.get("/petition/signers", requireLoggedInUser, async (request, response) => {
     const allUserData = await getAllUserData();
     const currentUser = await getCurrentUser(request.session.user_id);
+    const currentSignature = await getSignatureByID(request.session.user_id);
+    if (!currentSignature) {
+        response.render("signers", {
+            allUserData,
+            currentUser,
+            notSigned: true,
+        });
+        return;
+    }
     response.render("signers", { allUserData, currentUser });
 });
 
@@ -147,6 +160,20 @@ app.get(
         const { city } = request.params;
         const UserDataByCity = await getAllUserData();
         const currentUser = await getCurrentUser(request.session.user_id);
+        const currentSignature = await getSignatureByID(
+            request.session.user_id
+        );
+        if (!currentSignature) {
+            response.render("signersCity", {
+                UserDataByCity: UserDataByCity.filter(
+                    (user) => user.city === city
+                ),
+                currentUser,
+                city,
+                notSigned: true,
+            });
+            return;
+        }
         response.render("signersCity", {
             UserDataByCity: UserDataByCity.filter((user) => user.city === city),
             currentUser,
