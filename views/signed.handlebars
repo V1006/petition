@@ -10,13 +10,20 @@
     </ul>
 </nav>
 <section class="register">
-    <div class="registerSection" style="max-width: 800px;">
-        <h1>Thank you </h1>
-        <h1 class="userName">{{currentUser.first_name}}</h1>
-        <h2>And remember don't fall of the edge!</h2>
-        <div class="signatureContainer">
-            <img src="{{currentSignature.signature}}" alt="" />
+    <div class="ContentWrapper">
+        <div
+            class="registerSection"
+            style="max-width: 800px; min-width: 740px;"
+        >
+            <h1>Thank you<h1
+                    class="userName"
+                >{{currentUser.first_name}},</h1></h1>
+
+            <h2>and remember don't fall of the edge!</h2>
+            <div class="signatureContainer">
+                <img src="{{currentSignature.signature}}" alt="" />
+            </div>
+            <a href="/petition/signers">See all {{signers.length}} signers</a>
         </div>
-        <a href="/petition/signers">See all {{signers.length}} signers</a>
     </div>
 </section>

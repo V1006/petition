@@ -18,6 +18,10 @@ const {
 } = require("./db");
 const { SESSION_SECRET } = require("./secrets.json");
 const cookieSession = require("cookie-session");
+const {
+    requireLoggedOutUser,
+    requireLoggedInUser,
+} = require("./middleware.js");
 
 const app = express();
 
@@ -44,11 +48,7 @@ app.use(
 // endpoints
 
 // register endpoints
-app.get("/petition/register", (request, response) => {
-    if (request.session.user_id) {
-        response.redirect("/petition/signPetition");
-        return;
-    }
+app.get("/petition/register", requireLoggedOutUser, (request, response) => {
     response.render("register");
 });
 
@@ -69,11 +69,7 @@ app.post("/petition/register", async (request, response) => {
 
 // login endpoints
 
-app.get("/petition/login", (request, response) => {
-    if (request.session.user_id) {
-        response.redirect("/petition/signPetition");
-        return;
-    }
+app.get("/petition/login", requireLoggedOutUser, (request, response) => {
     response.render("login");
 });
 
@@ -93,11 +89,7 @@ app.post("/petition/login", async (request, response) => {
 
 // landing page endpoint
 
-app.get("/petition", (request, response) => {
-    if (request.session.user_id) {
-        response.redirect("/petition/signPetition");
-        return;
-    }
+app.get("/petition", requireLoggedOutUser, (request, response) => {
     response.render("petition");
 });
 
@@ -117,26 +109,24 @@ app.post("/petition/signPetition", async (request, response) => {
     }
 });
 
-app.get("/petition/signPetition", async (request, response) => {
-    if (!request.session.user_id) {
-        response.redirect("/petition/register");
-        return;
-    }
-    const currentSignature = await getSignatureByID(request.session.user_id);
+app.get(
+    "/petition/signPetition",
+    requireLoggedInUser,
+    async (request, response) => {
+        const currentSignature = await getSignatureByID(
+            request.session.user_id
+        );
 
-    if (!currentSignature) {
-        const currentUser = await getCurrentUser(request.session.user_id);
-        response.render("signPetition", { currentUser });
-    } else {
-        response.redirect("/petition/signers");
+        if (!currentSignature) {
+            const currentUser = await getCurrentUser(request.session.user_id);
+            response.render("signPetition", { currentUser });
+        } else {
+            response.redirect("/petition/signers");
+        }
     }
-});
+);
 
-app.get("/petition/signed", async (request, response) => {
-    if (!request.session.user_id) {
-        response.redirect("/petition/register");
-        return;
-    }
+app.get("/petition/signed", requireLoggedInUser, async (request, response) => {
     const signers = await getSignatures();
     const currentSignature = await getSignatureByID(request.session.user_id);
     const currentUser = await getCurrentUser(request.session.user_id);
@@ -144,39 +134,30 @@ app.get("/petition/signed", async (request, response) => {
 });
 
 // list of signers all and by city
-app.get("/petition/signers", async (request, response) => {
-    if (!request.session.user_id) {
-        response.redirect("/petition/register");
-        return;
-    }
+app.get("/petition/signers", requireLoggedInUser, async (request, response) => {
     const allUserData = await getAllUserData();
     const currentUser = await getCurrentUser(request.session.user_id);
     response.render("signers", { allUserData, currentUser });
 });
 
-app.get("/petition/signers/:city", async (request, response) => {
-    const { city } = request.params;
-    if (!request.session.user_id) {
-        response.redirect("/petition/register");
-        return;
+app.get(
+    "/petition/signers/:city",
+    requireLoggedInUser,
+    async (request, response) => {
+        const { city } = request.params;
+        const UserDataByCity = await getAllUserData();
+        const currentUser = await getCurrentUser(request.session.user_id);
+        response.render("signersCity", {
+            UserDataByCity: UserDataByCity.filter((user) => user.city === city),
+            currentUser,
+            city,
+        });
     }
-
-    const UserDataByCity = await getAllUserData();
-    const currentUser = await getCurrentUser(request.session.user_id);
-    response.render("signersCity", {
-        UserDataByCity: UserDataByCity.filter((user) => user.city === city),
-        currentUser,
-        city,
-    });
-});
+);
 
 // profile endpoints
 
-app.get("/petition/profile", async (request, response) => {
-    if (!request.session.user_id) {
-        response.redirect("/petition/register");
-        return;
-    }
+app.get("/petition/profile", requireLoggedInUser, async (request, response) => {
     if (request.session.one_time_visit) {
         const currentUser = await getCurrentUser(request.session.user_id);
         response.render("profile", { currentUser });
@@ -185,31 +166,35 @@ app.get("/petition/profile", async (request, response) => {
     response.redirect("/petition/signPetition");
 });
 
-app.post("/petition/profile", async (request, response) => {
-    try {
-        await createUserProfile(request.body, request.session.user_id);
-        request.session.one_time_visit = false;
-        response.redirect("/petition/signPetition");
-    } catch (error) {
-        console.log(error);
-        response.render("petition/profile", {
-            title: "create new user",
-            error: true,
-        });
+app.post(
+    "/petition/profile",
+    requireLoggedInUser,
+    async (request, response) => {
+        try {
+            await createUserProfile(request.body, request.session.user_id);
+            request.session.one_time_visit = false;
+            response.redirect("/petition/signPetition");
+        } catch (error) {
+            console.log(error);
+            response.render("petition/profile", {
+                title: "create new user",
+                error: true,
+            });
+        }
     }
-});
+);
 
-// edit entpoints
+// edit endpoints
 
-app.get("/petition/profile/edit", async (request, response) => {
-    if (!request.session.user_id) {
-        response.redirect("/petition/register");
-        return;
+app.get(
+    "/petition/profile/edit",
+    requireLoggedInUser,
+    async (request, response) => {
+        const userInfoByID = await getUserInfoById(request.session.user_id);
+        const currentUser = await getCurrentUser(request.session.user_id);
+        response.render("edit", { userInfoByID, currentUser });
     }
-    const userInfoByID = await getUserInfoById(request.session.user_id);
-    const currentUser = await getCurrentUser(request.session.user_id);
-    response.render("edit", { userInfoByID, currentUser });
-});
+);
 app.post("/petition/profile/edit", async (request, response) => {
     try {
         await updateUser({ ...request.body, id: request.session.user_id });

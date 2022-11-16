@@ -13,19 +13,23 @@
 <ul class="signers">
     {{#each allUserData}}
         {{#if url}}
-            <li>Name:<br />
-                <a href="{{url}}">{{first_name}} {{last_name}}</a><br />
-                Age:
-                {{age}}<br />
-                City:
-                <a href="/petition/signers/{{city}}">{{city}}</a></li><br />
+            <div class="liBox">
+                <li>Name: <p><a
+                        target="_blank"
+                        href="{{url}}"
+                    >{{first_name}} {{last_name}}</a></p><p>Age: {{age}}
+                        <p>City: <a
+                        href="/petition/signers/{{city}}"
+                    >{{city}}</a></p></li>
+            </div>
         {{else}}
-            <li>Name:<br />
-                <p href="{{url}}">{{first_name}} {{last_name}}</p>
-                Age:
-                {{age}}<br />
-                City:
-                <a href="/petition/signers/{{city}}">{{city}}</a></li><br />
+            <div class="liBox">
+                <li>Name: 
+                    <p>{{first_name}} {{last_name}}</p>
+                    <p>Age: 
+                    {{age}}</p>
+                    <p>City: <a href="/petition/signers/{{city}}">{{city}}</a></p></li>
+            </div>
         {{/if}}
     {{/each}}
 </ul>

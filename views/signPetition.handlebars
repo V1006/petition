@@ -11,7 +11,7 @@
 </nav>
 
 <section class="register">
-    <div class="registerSection" style="max-width: 800px;">
+    <div class="registerSection" style="max-width: 800px; min-width: 740px;">
         <div class="header">
             <h1>Hey {{currentUser.first_name}},</h1>
             <h2>Sign down here to heat the Iron🌎</h2>
@@ -31,7 +31,7 @@
                 required
             />
         </form>
-        <div class="signHere">
+        <div class="signHereReal">
             <p>Sign here</p>
             <canvas id="stage" width="700" height="100"></canvas>
             {{#if error}}
