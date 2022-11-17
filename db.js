@@ -14,10 +14,10 @@ const db = spicedPg(DATABASE_URL); */
 let db;
 if (!process.env.DATABASE_URL) {
     // we are running locally!
-    const { DATABASE_USER, DATABASE_PASSWORD } = require("./secrets.json");
+    const { DATABASE_USERNAME, DATABASE_PASSWORD } = require("./secrets.json");
     const DATABASE_NAME = "petition";
     db = spicedPg(
-        `postgres:${DATABASE_USER}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}`
+        `postgres:${DATABASE_USERNAME}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}`
     );
 } else {
     // we are deploying
