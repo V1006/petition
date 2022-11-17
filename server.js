@@ -16,7 +16,7 @@ const {
     updateUser,
     upsertUserProfile,
 } = require("./db");
-const { SESSION_SECRET } = require("./secrets.json");
+// const { SESSION_SECRET } = require("./secrets.json");
 const cookieSession = require("cookie-session");
 const {
     requireLoggedOutUser,
@@ -24,6 +24,13 @@ const {
 } = require("./middleware.js");
 
 const app = express();
+
+let secrets;
+if (process.env.NODE_ENV == "production") {
+    secrets = process.env; // in prod the secrets are environment variables
+} else {
+    secrets = require("./secrets");
+}
 
 // static files middleware
 app.use(express.static(path.join(__dirname, "public")));
@@ -38,7 +45,7 @@ app.set("view engine", "handlebars");
 // additional middleware
 app.use(
     cookieSession({
-        secret: SESSION_SECRET,
+        secret: secrets.SESSION_SECRET,
         maxAge: 1000 * 60 * 60 * 24 * 14,
         sameSite: true,
     })
@@ -243,5 +250,5 @@ app.get("/petition/logout", (request, response) => {
     request.session = null;
     response.redirect("/petition/login");
 });
-
-app.listen(8080, () => console.log("listening on http://localhost:8080"));
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`listening on http://localhost:${port}`));

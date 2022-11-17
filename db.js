@@ -2,13 +2,27 @@
 const spicedPg = require("spiced-pg");
 const { hash, genSalt, compare } = require("bcryptjs");
 
-const { DATABASE_USERNAME, DATABASE_PASSWORD } = require("./secrets.json");
+/* const { DATABASE_USERNAME, DATABASE_PASSWORD } = require("./secrets.json");
 const DATABASE_NAME = "petition";
 const DATABASE_URL = `postgres:${DATABASE_USERNAME}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}`;
 
-const db = spicedPg(DATABASE_URL);
+const db = spicedPg(DATABASE_URL); */
 
 /// setup ///
+
+// render
+let db;
+if (!process.env.DATABASE_URL) {
+    // we are running locally!
+    const { DATABASE_USER, DATABASE_PASSWORD } = require("./secrets.json");
+    const DATABASE_NAME = "petition";
+    db = spicedPg(
+        `postgres:${DATABASE_USER}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}`
+    );
+} else {
+    // we are deploying
+    db = spicedPg(process.env.DATABASE_URL);
+}
 
 // hashing password
 
