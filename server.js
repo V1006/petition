@@ -241,7 +241,7 @@ app.post("/petition/profile/edit", async (request, response) => {
 // logout endpoint
 app.get("/petition/logout", (request, response) => {
     request.session = null;
-    response.redirect("/petition");
+    response.redirect("/petition/login");
 });
 
 app.listen(8080, () => console.log("listening on http://localhost:8080"));
