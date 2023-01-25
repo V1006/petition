@@ -28,8 +28,17 @@ function handleClick() {
         .to(
             ".mainBG",
             {
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-        url("/bg.png")`,
+                backgroundImage: `linear-gradient(rgba(12, 15, 20, 1), rgba(12, 15, 20, 1)),
+        url("/Erde2.jpg")`,
+                duration: 0,
+            },
+            "-=1.5"
+        )
+        .to(
+            ".mainBG",
+            {
+                backgroundImage: `linear-gradient(rgba(12, 15, 20, 0), rgba(12, 15, 20, 0)),
+        url("/Erde2.jpg")`,
                 duration: 3,
             },
             "-=1.5"
